@@ -5,7 +5,7 @@
 
 LIBEXPORT void SetLogFun( DebugPointer ptrLogFun )
 {
-	LogFun = ptrLogFun;
+	g_objDnFile.m_ptrLogFun = ptrLogFun;
 }
 
 LIBEXPORT unsigned long GenerateID( const char* pszStr )

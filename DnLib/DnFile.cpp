@@ -337,7 +337,7 @@ bool	CDnFile::OpenFile(const char* pszFile)
 		pinfoIndex->uSize = uFileSize;
 		pDnpInfo->mapIndex[idSubFile] = pinfoIndex;
 		sprintf( strID, "idSubFile:%u",idSubFile );
-		LogFun(strID);
+		m_ptrLogFun( strID );
 	}
 	m_mapDnp[idFile] = pDnpInfo;
 	return true;

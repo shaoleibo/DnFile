@@ -12,13 +12,13 @@
 
 using namespace std;
 typedef void (*DebugPointer) (char*) ;
-static DebugPointer LogFun;
+
 class CDnFile  
 {
 public:
 	CDnFile();
 	virtual ~CDnFile();
-	
+	DebugPointer m_ptrLogFun;
 public:
 	void			BeforeUseDnFile();
 	void			AfterUseDnFile();
