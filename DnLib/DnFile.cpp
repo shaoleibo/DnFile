@@ -320,7 +320,7 @@ bool	CDnFile::OpenFile(const char* pszFile)
 
 	unsigned long uFileAmount = 0;
 	fread(&uFileAmount, sizeof(unsigned long), 1, pDnpInfo->fpDnp);
-
+	char strID[256]="";
 	for(unsigned long uCounter = 0; uCounter < uFileAmount; uCounter++)
 	{
 		unsigned long idSubFile;
@@ -336,6 +336,8 @@ bool	CDnFile::OpenFile(const char* pszFile)
 		pinfoIndex->uOffset = uFileOffset;
 		pinfoIndex->uSize = uFileSize;
 		pDnpInfo->mapIndex[idSubFile] = pinfoIndex;
+		sprintf( strID, "idSubFile:%u",idSubFile );
+		LogFun(strID);
 	}
 	m_mapDnp[idFile] = pDnpInfo;
 	return true;

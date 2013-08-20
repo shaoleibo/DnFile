@@ -11,13 +11,14 @@
 #include <map>
 
 using namespace std;
-
+typedef void (*DebugPointer) (char*) ;
+static DebugPointer LogFun;
 class CDnFile  
 {
 public:
 	CDnFile();
 	virtual ~CDnFile();
-
+	
 public:
 	void			BeforeUseDnFile();
 	void			AfterUseDnFile();

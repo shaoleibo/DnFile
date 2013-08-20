@@ -3,12 +3,17 @@
 #include <windows.h>
 #define LIBEXPORT extern "C" __declspec(dllexport)
 
+LIBEXPORT void SetLogFun( DebugPointer ptrLogFun )
+{
+	LogFun = ptrLogFun;
+}
+
 LIBEXPORT unsigned long GenerateID( const char* pszStr )
 {
 	return g_objDnFile.GenerateID( pszStr );
 }
 
-LIBEXPORT bool OpenDnpFile(const char* pszFile)
+LIBEXPORT bool OpenDnpFile(const char* pszFile )
 {
 	return g_objDnFile.OpenFile( pszFile );
 }
