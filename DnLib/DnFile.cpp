@@ -62,14 +62,18 @@ FILE*	CDnFile::GetFPtr(const char* pszFile, unsigned long& usFileSize)
 	if(!this->CheckDisperseFile(idFile))
 	{
 		unsigned long uFileNameLength = strlen(szFileCopy);
-		for(int i = 0; i < uFileNameLength; i ++)
-		{
-			if(szFileCopy[i] == '\\')
-			{
-				szFileCopy[i] = '\0';
-			}
-		}
-		unsigned long idPack = this->GenerateID(szFileCopy);
+
+		char *p = strchr( szFileCopy, '\\');
+		//for(int i = 0; i < uFileNameLength; i ++)
+		//{
+		//	if(szFileCopy[i] == '\\')
+		//	{
+		//		szFileCopy[i] = '\0';
+		//	}
+		//}
+		char szDirName[MAX_PATH] = "";
+		strncpy( szDirName, szFileCopy, p-szFileCopy );
+		unsigned long idPack = this->GenerateID( szDirName );
 		map<unsigned long, DnpInfo*>::iterator iter = m_mapDnp.find(idPack);
 		if(iter != m_mapDnp.end())
 		{
