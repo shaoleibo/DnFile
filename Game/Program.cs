@@ -7,6 +7,8 @@ using SlimDX.Windows;
 using SlimDX.Direct3D9;
 using System.Drawing;
 using Game.Graphics;
+using Game.Data;
+using Game.Framework;
 
 namespace Game
 {
@@ -30,6 +32,13 @@ namespace Game
             //    BackBufferHeight = form.ClientSize.Height
             //});
             Core.CreateDevice(form);
+
+            if (DnFile.OpenDnpFile("e:/c3engine/res/c3.dnp"))
+            {
+                C3DObj obj = new C3DObj();
+                obj.Create("e:/c3engine/res/c3/mesh/002137040.c3");
+                DnFile.CloseDnpFile("e:/c3engine/res/c3.dnp");
+            }
 
             var vertices = new VertexBuffer(Core.Device, 4 * 16, Usage.WriteOnly, VertexFormat.None, Pool.Managed);
             vertices.Lock(0, 0, LockFlags.None).WriteRange(new[] {

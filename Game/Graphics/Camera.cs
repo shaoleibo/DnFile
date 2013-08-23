@@ -19,16 +19,16 @@ namespace Game.Graphics
         public const int _SCR_HEIGHT = 768;
         public Camera()
         {
-            lpFrom.X = _SCR_WIDTH / 2;
-            lpFrom.Y = -1000;
-            lpFrom.Z = _SCR_HEIGHT / 2;
+            lpFrom.X = 0;
+            lpFrom.Y = 0;
+            lpFrom.Z = -5.0f;
 
-            lpTo.X = _SCR_WIDTH / 2;
+            lpTo.X = 0;
             lpTo.Y = 0;
-            lpTo.Z = _SCR_HEIGHT / 2;
+            lpTo.Z = 0;
 
             fNear = 1.0f;
-            fFar = 10000.0f;
+            fFar = 1000.0f;
 
             fFov = Mathf.AngleToRadian(60.0f);
         }
@@ -38,7 +38,7 @@ namespace Game.Graphics
         /// </summary>
         public void BuildView()
         {
-            Vector3 up = new Vector3( 0.0f, 0.0f, -1.0f );
+            Vector3 up = new Vector3( 0.0f, 1.0f, 0.0f );
             Matrix viewMat = Matrix.LookAtLH( lpFrom, lpTo, up );
             Core.Device.SetTransform(TransformState.View, viewMat);
         } 

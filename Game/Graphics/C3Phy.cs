@@ -57,7 +57,7 @@ namespace Game.Graphics
             }
         }
 
-        string name;          
+        string name;            // 物件名称
         DWORD dwBlendCount;     // 每个顶点受到多少根骨骼影响
         DWORD dwNVecCount;		// 顶点数(普通顶点)
         DWORD dwAVecCount;		// 顶点数(透明顶点)
@@ -69,15 +69,13 @@ namespace Game.Graphics
         WORD  []lpIB;			// 索引池(普通多边形/透明多边形)
         IndexBuffer ib;
 
-        public C3Phy Load( SafeFileHandle file )
+        public void Load( BinaryReader br )
         {
-            C3Phy phy = new C3Phy();
-            FileStream fs = new FileStream(file, FileAccess.Read);
-            
-            BinaryReader br = new BinaryReader(fs);
             DWORD temp = br.ReadUInt32();
             char []lpName = new char[temp + 1];
-            br.ReadChars((int)temp);
+            char []strName = br.ReadChars((int)temp);
+            Array.Copy(strName, lpName, temp);
+            lpName[temp] = '\0';
             this.name = lpName.ToString();
 
             this.dwBlendCount = br.ReadUInt32();
@@ -119,8 +117,7 @@ namespace Game.Graphics
             ibs.Close();
 
             this.ib.Unlock();
-            br.Close();
-            return phy;
+            
         }
 
     }
