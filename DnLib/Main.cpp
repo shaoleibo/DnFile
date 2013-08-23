@@ -31,3 +31,7 @@ LIBEXPORT HANDLE GetFPtr(const char* pszFile, unsigned long& usFileSize)
 	//return g_objDnFile.GetFPtr( pszFile, usFileSize );
 }
 
+LIBEXPORT void *GetMPtr(const char* pszFile, unsigned long& usFileSize)
+{
+	return g_objDnFile.GetMPtr( pszFile, usFileSize );
+}

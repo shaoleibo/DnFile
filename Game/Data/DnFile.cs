@@ -24,6 +24,9 @@ namespace Game.Data
         [DllImport("DnLib.dll", CharSet = CharSet.Ansi, EntryPoint = "GetFPtr", CallingConvention = CallingConvention.Cdecl)]
         public static extern SafeFileHandle GetFPtr(string pszStr, ref UInt32 usFileSize);
 
+        [DllImport( "DnLib.dll", CharSet = CharSet.Ansi, EntryPoint = "GetMPtr", CallingConvention = CallingConvention.Cdecl )]
+        public static extern IntPtr GetMPtr( string pszStr, ref UInt32 usFileSize );
+
         /// <summary>
         /// 打开一个C3文件，并获取去掉开头标识的文件流
         /// </summary>
@@ -39,5 +42,29 @@ namespace Game.Data
             fileSize = (int)size;
             return fs;
         }
+
+        /// <summary>
+        /// 打开一个C3文件，并获取去掉开头标识的字节数组
+        /// </summary>
+        /// <param name="fileName"></param>
+        /// <param name="fileSize"></param>
+        /// <returns></returns>
+        public static byte[] GetFileBytes( string fileName, out int fileSize )
+        {
+            UInt32 size = 0;
+            IntPtr intPtr = GetMPtr( fileName, ref size );
+            byte[] fileBytes;
+            if( intPtr == null )
+            {
+                fileSize = 0;
+                return null;
+            }
+            fileSize = (int)size;
+            fileBytes = new byte[fileSize];
+            Marshal.Copy( intPtr, fileBytes, 0, fileSize );
+            return fileBytes;
+        }
+
+
     }
 }
