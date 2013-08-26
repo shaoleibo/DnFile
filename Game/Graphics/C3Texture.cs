@@ -18,20 +18,24 @@ namespace Game.Graphics
         public int width { get { return imageInfo.Width;} }
         
         public int height { get { return imageInfo.Height; } }
-        
-        public void Load( string path, int mipLevel = 3, int colorKey = 0 )
+
+        public C3Texture(string path, int mipLevel = 3, int colorKey = 0)
         {
             filePath = path;
             int size  = 0;
             byte []fileBytes = DnFile.GetFileBytes( path, out size );//从内存中查找
-            if( fileBytes != null )
+            if (fileBytes != null)
             {
-                texture = Texture.FromMemory( Core.Device, fileBytes, 0, 0, mipLevel, Usage.None, Format.Unknown
-                    , Pool.Managed, Filter.Linear, Filter.Linear, colorKey, out imageInfo );
+                texture = Texture.FromMemory(Core.Device, fileBytes, 0, 0, mipLevel, Usage.None, Format.Unknown
+                    , Pool.Managed, Filter.Linear, Filter.Linear, colorKey, out imageInfo);
 
             }
-
-            
+            else
+            {
+                texture = Texture.FromFile(Core.Device, path, 0, 0, mipLevel, Usage.None, Format.Unknown
+    , Pool.Managed, Filter.Linear, Filter.Linear, colorKey, out imageInfo);
+            }
+          
         }
 
     }

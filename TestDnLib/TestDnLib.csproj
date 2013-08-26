@@ -45,7 +45,6 @@
   <ItemGroup>
     <Compile Include="DnFile.cs" />
     <Compile Include="GameDataSet.cs" />
-    <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Resource.cs" />
   </ItemGroup>

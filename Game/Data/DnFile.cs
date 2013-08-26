@@ -54,7 +54,7 @@ namespace Game.Data
             UInt32 size = 0;
             IntPtr intPtr = GetMPtr( fileName, ref size );
             byte[] fileBytes;
-            if( intPtr == null )
+            if( intPtr.ToInt32()==0 )
             {
                 fileSize = 0;
                 return null;

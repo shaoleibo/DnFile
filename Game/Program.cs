@@ -32,12 +32,16 @@ namespace Game
             //    BackBufferHeight = form.ClientSize.Height
             //});
             Core.CreateDevice(form);
-
-            if (DnFile.OpenDnpFile("e:/c3engine/res/c3.dnp"))
+            C3Sprite sprite = null;
+            if (DnFile.OpenDnpFile("c3.dnp"))
             {
-                C3DObj obj = new C3DObj();
-                obj.Create("e:/c3engine/res/c3/mesh/002137040.c3");
-                DnFile.CloseDnpFile("e:/c3engine/res/c3.dnp");
+                //C3DObj obj = new C3DObj();
+                //obj.Create("e:/c3engine/res/c3/mesh/002137040.c3");
+                //DnFile.CloseDnpFile("e:/c3engine/res/c3.dnp");
+                DnFile.CloseDnpFile("c3.dnp");
+                C3Texture texture = new C3Texture("c3/texture/410230.dds");
+                sprite = new C3Sprite(texture);
+
             }
 
             var vertices = new VertexBuffer(Core.Device, 4 * 16, Usage.WriteOnly, VertexFormat.None, Pool.Managed);
@@ -70,8 +74,8 @@ namespace Game
               Mesh teapot = Mesh.CreateTeapot(Core.Device);
 
                 Camera cam = new Camera();
-                cam.BuildView();
-                cam.BuildProjection(form.ClientSize.Width, form.ClientSize.Height);
+                //cam.BuildView();
+                //cam.BuildProjection(form.ClientSize.Width, form.ClientSize.Height);
 
                 Core.Device.SetRenderState(RenderState.Lighting, false);//很重要 默认是开启光照的
                 Core.Device.SetRenderState(RenderState.FillMode, FillMode.Solid);
@@ -86,13 +90,14 @@ namespace Game
                 Core.ClearBuffer(true, true, new Color4(0, 0, 0));
                 Core.Begin3D();
 
-                Core.Device.SetStreamSource(0, vertices, 0, 16);
-                Core.Device.VertexDeclaration = vertexDecl;
-                Core.Device.Indices = indexs;
-                //device.DrawPrimitives(PrimitiveType.TriangleList, 0, 2);
-                Core.Device.DrawIndexedPrimitives(PrimitiveType.TriangleList, 0, 0, 4, 0, 2);
+                sprite.Draw(0,0);
+                //Core.Device.SetStreamSource(0, vertices, 0, 16);
+                //Core.Device.VertexDeclaration = vertexDecl;
+                //Core.Device.Indices = indexs;
+                ////device.DrawPrimitives(PrimitiveType.TriangleList, 0, 2);
+                //Core.Device.DrawIndexedPrimitives(PrimitiveType.TriangleList, 0, 0, 4, 0, 2);
 
-                teapot.DrawSubset(0);
+                //teapot.DrawSubset(0);
                 Core.End3D();
                 Core.Filp();
             });

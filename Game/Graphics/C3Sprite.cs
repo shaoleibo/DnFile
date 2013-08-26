@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Drawing;
+using SlimDX.Direct3D9;
+using SlimDX;
 
 namespace Game.Graphics
 {
@@ -10,12 +12,11 @@ namespace Game.Graphics
     {
         struct SpriteVertex
         {
-            public float x, y, z;     		// 屏幕坐标
-            public float rhw;
-            public UInt32 color;			// 颜色
+            public float x, y, z, rhw;     	// 屏幕坐标
+            public int color;			// 颜色
             public float u, v;				// 贴图坐标
         };
-
+        private VertexDeclaration _vertexDecl;
         private readonly C3Texture _texture;
         SpriteVertex []_arrVertex;
         Rectangle source;
@@ -36,37 +37,53 @@ namespace Game.Graphics
             _arrVertex[2].u = maxU;
             _arrVertex[2].v = minV;
 
-            _arrVertex[2].u = maxU;
-            _arrVertex[2].v = maxV;
+            _arrVertex[3].u = maxU;
+            _arrVertex[3].v = maxV;
 
-            _arrVertex[0].x = 
+            _arrVertex[0].x = 0;
+            _arrVertex[0].y = 0;
+
+            _arrVertex[1].x = 0;
+            _arrVertex[1].y = _texture.height;
+
+            _arrVertex[2].x = _texture.width;
+            _arrVertex[2].y = 0;
+
+            _arrVertex[3].x = _texture.width;
+            _arrVertex[3].y = _texture.height;
+
         }
 
-        public C3Sprite( C3Texture texture )
+        public C3Sprite(C3Texture texture)
         {
             _arrVertex = new SpriteVertex[4];
+            for (int i = 0; i < 4; i++)
+            {
+                _arrVertex[i].rhw = 1.0f;
+                _arrVertex[i].color = new Color4(255, 255, 255, 255).ToArgb();
+            }
             _texture = texture;
             source = new Rectangle( 0, 0, _texture.width, _texture.height );
+            CalcCoor();
 
-            _arrVertex[0].u = 0.0f;
-            _arrVertex[0].v = 0.0f;
+            VertexElement[] vertexElems = new VertexElement[]{
+                new VertexElement(0, 0, DeclarationType.Float4, DeclarationMethod.Default, DeclarationUsage.PositionTransformed, 0 ),
+                new VertexElement(0, 16, DeclarationType.Color, DeclarationMethod.Default, DeclarationUsage.Color, 0 ),
+                new VertexElement(0, 20, DeclarationType.Float2, DeclarationMethod.Default, DeclarationUsage.TextureCoordinate, 0 ),
+                VertexElement.VertexDeclarationEnd
+            };
+            _vertexDecl = new VertexDeclaration(Core.Device, vertexElems);
 
-            _arrVertex[1].u = 0.0f;
-            _arrVertex[1].v = ;
-
-            _arrVertex[2].u = 1.0f;
-            _arrVertex[2].v = 0.0f;
-
-            _arrVertex[3].u = 1.0f;
-            _arrVertex[3].v = 1.0f;
-
-            _arrVertex[0].x = 0.0f;
-            _arrVertex[0].y = 0.0f;
-        }
+         }
 
         public void Draw( int x, int y )
         {
-
+            //Core.Device.SetSamplerState(0, SamplerState.MagFilter, TextureFilter.Linear);
+            //Core.Device.SetSamplerState(0, SamplerState.MipFilter, TextureFilter.Linear); 
+            Core.Device.SetTexture(0, _texture.texture);
+            Core.Device.VertexFormat = VertexFormat.PositionRhw | VertexFormat.Diffuse | VertexFormat.Texture0;
+            //Core.Device.VertexDeclaration = _vertexDecl;
+            Result hr = Core.Device.DrawUserPrimitives<SpriteVertex>(PrimitiveType.TriangleStrip, 2, _arrVertex );
         }
     }
 }
