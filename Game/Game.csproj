@@ -52,9 +52,6 @@
     <StartupObject>Game.Program</StartupObject>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="DnLib">
-      <HintPath>..\DnLib\Debug\DnLib.dll</HintPath>
-    </Reference>
     <Reference Include="SlimDX, Version=4.0.13.43, Culture=neutral, PublicKeyToken=b1b0c32fd1ffe4f9, processorArchitecture=x86" />
     <Reference Include="System" />
     <Reference Include="System.Core" />
@@ -126,6 +123,12 @@
       <ProductName>Windows Installer 3.1</ProductName>
       <Install>true</Install>
     </BootstrapperPackage>
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\DnLib\DnLib.vcxproj">
+      <Project>{52649C6A-913A-4EC4-A507-317D131C3E44}</Project>
+      <Name>DnLib</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

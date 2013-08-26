@@ -9,6 +9,7 @@ using System.Drawing;
 using Game.Graphics;
 using Game.Data;
 using Game.Framework;
+using System.Text.RegularExpressions;
 
 namespace Game
 {
@@ -23,8 +24,6 @@ namespace Game
         [STAThread]
         static void Main()
         {
-
-            
             var form = new RenderForm("SlimDX - MiniTri Direct3D9 Sample");
             //var device = new Device(new Direct3D(), 0, DeviceType.Hardware, form.Handle, CreateFlags.HardwareVertexProcessing, new PresentParameters()
             //{
@@ -35,11 +34,11 @@ namespace Game
             C3Sprite sprite = null;
             if (DnFile.OpenDnpFile("c3.dnp"))
             {
-                //C3DObj obj = new C3DObj();
-                //obj.Create("e:/c3engine/res/c3/mesh/002137040.c3");
-                //DnFile.CloseDnpFile("e:/c3engine/res/c3.dnp");
+                C3DObj obj = new C3DObj();
+                obj.Create( "c3/mesh/002137040.c3" );
+
                 DnFile.CloseDnpFile("c3.dnp");
-                C3Texture texture = new C3Texture("c3/texture/410230.dds");
+                C3Texture texture = new C3Texture( "c3/texture/001000000.dds" );
                 sprite = new C3Sprite(texture);
 
             }
@@ -78,7 +77,7 @@ namespace Game
                 //cam.BuildProjection(form.ClientSize.Width, form.ClientSize.Height);
 
                 Core.Device.SetRenderState(RenderState.Lighting, false);//很重要 默认是开启光照的
-                Core.Device.SetRenderState(RenderState.FillMode, FillMode.Solid);
+                //Core.Device.SetRenderState(RenderState.FillMode, FillMode.Solid);
 
             MessagePump.Run(form, () =>
             {

@@ -6,6 +6,7 @@ using System.Drawing;
 using SlimDX.Direct3D9;
 using SlimDX;
 
+
 namespace Game.Graphics
 {
     public class C3Sprite
@@ -59,6 +60,7 @@ namespace Game.Graphics
             _arrVertex = new SpriteVertex[4];
             for (int i = 0; i < 4; i++)
             {
+                _arrVertex[i].z = 0.5f;
                 _arrVertex[i].rhw = 1.0f;
                 _arrVertex[i].color = new Color4(255, 255, 255, 255).ToArgb();
             }
@@ -78,11 +80,13 @@ namespace Game.Graphics
 
         public void Draw( int x, int y )
         {
+            
+            //顶点之间的顺序默认按照顺时针方向进行绘制 忽略裁剪
+            Core.Device.SetRenderState( RenderState.CullMode, Cull.None );
             //Core.Device.SetSamplerState(0, SamplerState.MagFilter, TextureFilter.Linear);
-            //Core.Device.SetSamplerState(0, SamplerState.MipFilter, TextureFilter.Linear); 
-            Core.Device.SetTexture(0, _texture.texture);
-            Core.Device.VertexFormat = VertexFormat.PositionRhw | VertexFormat.Diffuse | VertexFormat.Texture0;
-            //Core.Device.VertexDeclaration = _vertexDecl;
+            //Core.Device.SetSamplerState(0, SamplerState.MinFilter, TextureFilter.Linear); 
+            Core.Device.VertexDeclaration = _vertexDecl;  
+            Core.Device.SetTexture( 0, _texture.texture );                     
             Result hr = Core.Device.DrawUserPrimitives<SpriteVertex>(PrimitiveType.TriangleStrip, 2, _arrVertex );
         }
     }

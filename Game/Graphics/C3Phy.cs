@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using SlimDX;
+using System.Diagnostics;
+using System.Runtime.InteropServices;
 
 namespace Game.Graphics
 {
@@ -68,6 +70,8 @@ namespace Game.Graphics
         DWORD dwATriCount;		// 多边形数(透明多边形)
         WORD  []lpIB;			// 索引池(普通多边形/透明多边形)
         IndexBuffer ib;
+        string texName;         //纹理名称
+
 
         public void Load( BinaryReader br )
         {
@@ -115,8 +119,27 @@ namespace Game.Graphics
                 ibs.Write<WORD>(idx);
             }
             ibs.Close();
-
             this.ib.Unlock();
+
+            //纹理路径长度
+            int texNameLen = (int)br.ReadUInt32();
+            char[] arrTexName = br.ReadChars( texNameLen );
+            texName = arrTexName.ToString();
+
+            int sizeBoxMin = Marshal.SizeOf( typeof(Vector3) );
+            Debug.WriteLine( "size:" + sizeBoxMin );
+            
+            byte[] bytesMin = br.ReadBytes( sizeBoxMin );
+            GCHandle handle = GCHandle.Alloc( bytesMin, GCHandleType.Pinned );
+            Vector3 bboxMin = (Vector3)Marshal.PtrToStructure( handle.AddrOfPinnedObject(), typeof( Vector3 ) );
+            handle.Free();
+            Debug.WriteLine( bboxMin.ToString() );
+
+            byte[] bytesMax = br.ReadBytes( Vector3.SizeInBytes );
+            GCHandle handleMax = GCHandle.Alloc( bytesMax, GCHandleType.Pinned );
+            Vector3 bboxMax = (Vector3)Marshal.PtrToStructure( handleMax.AddrOfPinnedObject(), typeof( Vector3 ) );
+            
+            handleMax.Free();
             
         }
 
